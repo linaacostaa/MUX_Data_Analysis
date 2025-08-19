@@ -1,4 +1,6 @@
 clc; clear; close all;
+#testing
+
 %% Step 1: Ask the user to select the scripts folder (where .m files are located)
 scriptsFolder = uigetdir('', 'Select the Folder Containing .m Files');
 if scriptsFolder == 0
