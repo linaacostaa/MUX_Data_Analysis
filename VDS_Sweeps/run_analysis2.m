@@ -2,8 +2,7 @@ clc; clear; close all;
 %% Step 1: Ask the user to select the scripts folder (where .m files are located)
 scriptsFolder = uigetdir('', 'Select the Folder Containing .m Files');
 if scriptsFolder == 0
-    error(['No scripts folder selected. Exiting' ...
-        '...']);
+    error('No scripts folder selected. Exiting...');
 end
 %% Step 2: Ask the user to select the folder with concentration folders
 concFolderPath = uigetdir('', 'Select the folder containing [Concentration]/Run folders');
@@ -38,7 +37,7 @@ plot_avg_sweeps_by_run(dataTable, analysisFolder_avg_concentration);
 
 samplingChoice = questdlg('Which sampling method would you like to perform?', ...
     'Sampling Method', ...
-    'IDS sampling', 'VGS sampling', 'Both', 'Both');
+    'IDS sampling', 'VGS sampling', 'IDS sampling');
 
 idsValue = '';
 vgsValue = '';
@@ -133,81 +132,6 @@ switch samplingChoice
             mkdir(analysisFolder_perc_change_by_cell_name);
         end
         plot_perc_change_by_cell_name(dataTable, analysisFolder_perc_change_by_cell_name, vgsValue);
-        
-    case 'Both'
-        idsValue = inputdlg('Enter a value for IDS sampling:', 'IDS Value');
-        if isempty(idsValue)
-            error('IDS value not provided. Exiting...');
-        end
-        idsValue = idsValue{1}; % Extract value from cell array
-        
-        vgsValue = inputdlg('Enter a value for VGS sampling:', 'VGS Value');
-        if isempty(vgsValue)
-            error('VGS value not provided. Exiting...');
-        end
-        vgsValue = vgsValue{1}; % Extract value from cell array
-        
-        % IDS Sampling functions
-        analysisFolder_concentration_vs_VTH = fullfile(concFolderPath, ['12_conc_vs_VTH_IDS_sampling_' idsValue]);
-        if ~exist(analysisFolder_concentration_vs_VTH, 'dir')
-            mkdir(analysisFolder_concentration_vs_VTH);
-        end
-        plot_concentration_vs_VTH(dataTable, analysisFolder_concentration_vs_VTH, idsValue);
-        
-        analysisFolder_concentration_vs_VTH_logscale = fullfile(concFolderPath, ['13_conc_vs_VTH_logscale_IDS_sampling_' idsValue]);
-        if ~exist(analysisFolder_concentration_vs_VTH_logscale, 'dir')
-            mkdir(analysisFolder_concentration_vs_VTH_logscale);
-        end
-        plot_concentration_vs_VTH_logscale(dataTable, analysisFolder_concentration_vs_VTH_logscale, idsValue);
-        
-        analysisFolder_conc_vs_avg_VTH_well = fullfile(concFolderPath, ['14_conc_vs_VTH_by_letter_IDS_sampling_' idsValue]);
-        if ~exist(analysisFolder_conc_vs_avg_VTH_well, 'dir')
-            mkdir(analysisFolder_conc_vs_avg_VTH_well);
-        end
-        plot_concentration_vs_VTH_by_letter(dataTable, analysisFolder_conc_vs_avg_VTH_well, idsValue);
-        
-        analysisFolder_conc_vs_avg_VTH_well_logscale = fullfile(concFolderPath, ['15_conc_vs_VTH_by_letter_log_IDS_sampling_' idsValue]);
-        if ~exist(analysisFolder_conc_vs_avg_VTH_well_logscale, 'dir')
-            mkdir(analysisFolder_conc_vs_avg_VTH_well_logscale);
-        end
-        plot_concentration_vs_VTH_by_letter_logscale(dataTable, analysisFolder_conc_vs_avg_VTH_well_logscale, idsValue);
-        
-        analysisFolder_plot_run_vs_VTH_by_concentration = fullfile(concFolderPath, ['16_run_vs_VTH_IDS_sampling_' idsValue]);
-        if ~exist(analysisFolder_plot_run_vs_VTH_by_concentration, 'dir')
-            mkdir(analysisFolder_plot_run_vs_VTH_by_concentration);
-        end
-        plot_run_vs_VTH_by_concentration(dataTable, analysisFolder_plot_run_vs_VTH_by_concentration, idsValue);
-        
-        % VGS Sampling functions
-        analysisFolder_concentration_vs_current = fullfile(concFolderPath, ['5_conc_vs_current_VGS_sampling_' vgsValue]);
-        if ~exist(analysisFolder_concentration_vs_current, 'dir')
-            mkdir(analysisFolder_concentration_vs_current);
-        end
-        plot_concentration_vs_current(dataTable, analysisFolder_concentration_vs_current, vgsValue);
-        
-        analysisFolder_concentration_vs_current_logscale = fullfile(concFolderPath, ['6_conc_vs_current_logscale_VGS_sampling_' vgsValue]);
-        if ~exist(analysisFolder_concentration_vs_current_logscale, 'dir')
-            mkdir(analysisFolder_concentration_vs_current_logscale);
-        end
-        plot_concentration_vs_current_logscale(dataTable, analysisFolder_concentration_vs_current_logscale, vgsValue);
-        
-        analysisFolder_conc_vs_avg_current_well = fullfile(concFolderPath, ['8_conc_vs_current_avg_letter_VGS_sampling_' vgsValue]);
-        if ~exist(analysisFolder_conc_vs_avg_current_well, 'dir')
-            mkdir(analysisFolder_conc_vs_avg_current_well);
-        end
-        plot_concentration_vs_current_by_group_letter(dataTable, analysisFolder_conc_vs_avg_current_well, vgsValue);
-        
-        analysisFolder_conc_vs_avg_current_well_logscale = fullfile(concFolderPath, ['9_conc_vs_current_avg_well_logscale_VGS_sampling_' vgsValue]);
-        if ~exist(analysisFolder_conc_vs_avg_current_well_logscale, 'dir')
-            mkdir(analysisFolder_conc_vs_avg_current_well_logscale);
-        end
-        plot_concentration_vs_current_by_group_letter_logscale(dataTable, analysisFolder_conc_vs_avg_current_well_logscale, vgsValue);
-        
-        analysisFolder_plot_run_vs_current_by_concentration = fullfile(concFolderPath, ['10_run_vs_IDS_VGS_sampling_' vgsValue]);
-        if ~exist(analysisFolder_plot_run_vs_current_by_concentration, 'dir')
-            mkdir(analysisFolder_plot_run_vs_current_by_concentration);
-        end
-        plot_run_vs_current_by_concentration(dataTable, analysisFolder_plot_run_vs_current_by_concentration, vgsValue);
         
     otherwise
         disp('No sampling method selected or invalid choice. Exiting script.');
