@@ -1,59 +1,92 @@
 function dataTable = gather_data_for_concentration_plotting(mainFolderPath)
-    dataRows = {};  % Initialize storage
+    % Initialize storage for data rows as a temporary struct array. This is
+    % more robust than a cell array for ensuring column consistency.
+    tempData = struct('CellName', {}, 'Parameters', {}, 'Concentration', {}, 'FilePath', {});
+
     % Get concentration folders
     concentrationFolders = dir(mainFolderPath);
     concentrationFolders = concentrationFolders([concentrationFolders.isdir]);
     concentrationFolders = concentrationFolders(~ismember({concentrationFolders.name}, {'.', '..'}));
-    
-    % Filter out folders starting with '.'
     concentrationFolders = concentrationFolders(arrayfun(@(x) x.name(1) ~= '.', concentrationFolders));
+
+    if isempty(concentrationFolders)
+        warning('No concentration folders found in the specified path: %s', mainFolderPath);
+        dataTable = table(); % Return an empty table
+        return;
+    end
     
     for c = 1:length(concentrationFolders)
         concName = concentrationFolders(c).name;
         concPath = fullfile(mainFolderPath, concName);
+
+        % Extract numeric concentration value from folder name [X]
+        concMatch = regexp(concName, '\[(\d+\.?\d*)\]', 'tokens');
+        if isempty(concMatch)
+            warning('Could not extract concentration from folder name: %s', concName);
+            continue;
+        end
+        concentration = str2double(concMatch{1}{1});
+
+        % Get parameter folders inside the concentration folder
+        parameterFolders = dir(concPath);
+        parameterFolders = parameterFolders([parameterFolders.isdir]);
+        parameterFolders = parameterFolders(~ismember({parameterFolders.name}, {'.', '..'}));
+        parameterFolders = parameterFolders(arrayfun(@(x) x.name(1) ~= '.', parameterFolders));
         
-        % Extract numeric concentration value from folder name
-        concentration = str2double(concName);
-        if isnan(concentration), continue; end
-        
-        % Get group folders (e.g., VdsSweep_Vgs0.60V)
-        groupFolders = dir(concPath);
-        groupFolders = groupFolders([groupFolders.isdir]);
-        groupFolders = groupFolders(~ismember({groupFolders.name}, {'.', '..'}));
-        
-        % Filter out folders starting with '.'
-        groupFolders = groupFolders(arrayfun(@(x) x.name(1) ~= '.', groupFolders));
-        
-        for g = 1:length(groupFolders)
-            groupName = groupFolders(g).name;
-            groupPath = fullfile(concPath, groupName);
-            
-            % Get cell folders (e.g., A1, A2)
-            cellFolders = dir(groupPath);
+        if isempty(parameterFolders)
+            warning('No parameter folders found in concentration folder: %s', concPath);
+            continue;
+        end
+
+        for p = 1:length(parameterFolders)
+            paramsName = parameterFolders(p).name;
+            paramsPath = fullfile(concPath, paramsName);
+
+            % Get cell folders inside the parameter folder
+            cellFolders = dir(paramsPath);
             cellFolders = cellFolders([cellFolders.isdir]);
             cellFolders = cellFolders(~ismember({cellFolders.name}, {'.', '..'}));
-            
-            % Filter out folders starting with '.'
             cellFolders = cellFolders(arrayfun(@(x) x.name(1) ~= '.', cellFolders));
             
-            for i = 1:length(cellFolders)
-                cellName = cellFolders(i).name;
-                cellPath = fullfile(groupPath, cellName);
-                
-                % Find CSV files
+            if isempty(cellFolders)
+                warning('No cell folders found in parameter folder: %s', paramsPath);
+                continue;
+            end
+
+            for cellIdx = 1:length(cellFolders)
+                cellName = cellFolders(cellIdx).name;
+                cellPath = fullfile(paramsPath, cellName);
+
+                % Find all CSV files inside the cell folder
                 csvFiles = dir(fullfile(cellPath, '*.csv'));
-                
-                % Filter out CSV files starting with '.'
                 csvFiles = csvFiles(arrayfun(@(x) x.name(1) ~= '.', csvFiles));
-                
-                for j = 1:length(csvFiles)
-                    filePath = fullfile(cellPath, csvFiles(j).name);
-                    dataRows(end+1, :) = {cellName, groupName, concentration, filePath}; %#ok<AGROW>
+
+                if isempty(csvFiles)
+                    warning('No CSV files found in: %s', cellPath);
+                    continue;
+                end
+
+                for fileIdx = 1:length(csvFiles)
+                    filePath = fullfile(cellPath, csvFiles(fileIdx).name);
+                    
+                    % Add a new struct to our temporary array
+                    newRow.CellName = string(cellName);
+                    newRow.Parameters = string(paramsName);
+                    newRow.Concentration = concentration;
+                    newRow.FilePath = string(filePath);
+                    
+                    tempData(end+1) = newRow;
                 end
             end
         end
     end
     
-    dataTable = cell2table(dataRows, ...
-        'VariableNames', {'CellName', 'GroupName', 'Concentration', 'FilePath'});
+    % Create the final table from the struct array
+    if isempty(tempData)
+        dataTable = table('Size', [0, 4], 'VariableTypes', {'string', 'string', 'double', 'string'}, ...
+            'VariableNames', {'CellName', 'Parameters', 'Concentration', 'FilePath'});
+        warning('No data found in the specified folder structure.');
+    else
+        dataTable = struct2table(tempData);
+    end
 end

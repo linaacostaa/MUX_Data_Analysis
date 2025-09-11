@@ -5,11 +5,13 @@ if scriptsFolder == 0
     error('No scripts folder selected. Exiting...');
 end
 %% Step 2: Ask the user to select the folder with concentration folders
-concFolderPath = uigetdir('', 'Select the folder containing [Concentration]/Run folders');
+concFolderPath = uigetdir('', 'Select the folder containing [Concentration]/Parameter folders');
 if concFolderPath == 0
     error('No folder selected for concentration analysis. Exiting...');
 end
 %% Step 3: Gather data for concentration plots
+% The 'gather_data_for_concentration_plotting' function now returns a table
+% with a 'Parameters' column instead of a 'RunName' column.
 dataTable = gather_data_for_concentration_plotting(concFolderPath);
 %% Step 4: Create a folder to save concentration plots inside the selected folder
 analysisFolder_concentration = fullfile(concFolderPath, '4_voltage_vs_current');
@@ -26,11 +28,13 @@ end
 %% Step 7.1: Generate average current plots by concentration
 plot_volt_vs_avg_current_by_group_letter(dataTable, analysisFolder_volt_vs_avg_current_letter);
 %% Step 11: Create a folder to save concentration plots inside the selected folder
-analysisFolder_avg_concentration = fullfile(concFolderPath, '11_sweep_avg_per_run');
+analysisFolder_avg_concentration = fullfile(concFolderPath, '11_sweep_avg_per_parameter_group');
 if ~exist(analysisFolder_avg_concentration, 'dir')
     mkdir(analysisFolder_avg_concentration);
 end
 %% Step 11.1: Generate average of all the sweeps for a given run number
+% NOTE: The 'RunName' column has been replaced by 'Parameters' in the data table.
+% Make sure your plotting function handles this change.
 plot_avg_sweeps_by_run(dataTable, analysisFolder_avg_concentration);
 
 %% Sampling Method Selection
@@ -76,7 +80,7 @@ switch samplingChoice
         end
         plot_concentration_vs_VTH_by_letter_logscale(dataTable, analysisFolder_conc_vs_avg_VTH_well_logscale, idsValue);
         
-        analysisFolder_plot_run_vs_VTH_by_concentration = fullfile(concFolderPath, ['16_run_vs_VTH_IDS_sampling_' idsValue]);
+        analysisFolder_plot_run_vs_VTH_by_concentration = fullfile(concFolderPath, ['16_parameter_vs_VTH_IDS_sampling_' idsValue]);
         if ~exist(analysisFolder_plot_run_vs_VTH_by_concentration, 'dir')
             mkdir(analysisFolder_plot_run_vs_VTH_by_concentration);
         end
@@ -115,7 +119,7 @@ switch samplingChoice
         end
         plot_concentration_vs_current_by_group_letter_logscale(dataTable, analysisFolder_conc_vs_avg_current_well_logscale, vgsValue);
         
-        analysisFolder_plot_run_vs_current_by_concentration = fullfile(concFolderPath, ['10_run_vs_IDS_VGS_sampling_' vgsValue]);
+        analysisFolder_plot_run_vs_current_by_concentration = fullfile(concFolderPath, ['10_parameter_vs_IDS_VGS_sampling_' vgsValue]);
         if ~exist(analysisFolder_plot_run_vs_current_by_concentration, 'dir')
             mkdir(analysisFolder_plot_run_vs_current_by_concentration);
         end
