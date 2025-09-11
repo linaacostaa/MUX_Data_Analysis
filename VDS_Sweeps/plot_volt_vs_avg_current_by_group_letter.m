@@ -24,6 +24,11 @@ function plot_volt_vs_avg_current_by_group_letter(dataTable, analysisFolder)
         rawExport{1, 1} = 'VDS';
         colIdx = 2;
 
+        % NEW: Initialize the cell array for the new summary CSV
+        summaryExport = {};
+        summaryExport{1, 1} = 'VDS';
+        summaryColIdx = 2;
+
         for c = 1:length(concentrations)
             conc = concentrations(c);
             files = groupData(groupData.Concentration == conc, :).FilePath;
@@ -66,6 +71,8 @@ function plot_volt_vs_avg_current_by_group_letter(dataTable, analysisFolder)
 
             if c == 1
                 rawExport(2:length(voltages)+1, 1) = num2cell(voltages');
+                % NEW: Populate VDS column for the summary CSV
+                summaryExport(2:length(voltages)+1, 1) = num2cell(voltages');
             end
 
             for s = 1:size(currents, 1)
@@ -80,6 +87,13 @@ rawExport{1, colIdx} = sprintf('%s - %s', cellNames{s}, sweepLabels{s});
             rawExport(2:length(meanI)+1, colIdx) = num2cell(meanI');
             rawExport(2:length(stdI)+1, colIdx+1) = num2cell(stdI');
             colIdx = colIdx + 2;
+
+            % NEW: Add average and standard deviation to the new summary CSV
+            summaryExport{1, summaryColIdx} = sprintf('[%.2f] Avg', conc);
+            summaryExport{1, summaryColIdx+1} = sprintf('[%.2f] Std', conc);
+            summaryExport(2:length(meanI)+1, summaryColIdx) = num2cell(meanI');
+            summaryExport(2:length(stdI)+1, summaryColIdx+1) = num2cell(stdI');
+            summaryColIdx = summaryColIdx + 2;
         end
 
         % Modified: Change x-axis label
@@ -98,5 +112,9 @@ rawExport{1, colIdx} = sprintf('%s - %s', cellNames{s}, sweepLabels{s});
         % Save raw data to CSV
         csvFile = fullfile(analysisFolder, sprintf('Group_%s_sweeps.csv', group));
         writecell(rawExport, csvFile);
+
+        % NEW: Save the summary data to a separate CSV
+        summaryCsvFile = fullfile(analysisFolder, sprintf('Group_%s_summary.csv', group));
+        writecell(summaryExport, summaryCsvFile);
     end
 end
