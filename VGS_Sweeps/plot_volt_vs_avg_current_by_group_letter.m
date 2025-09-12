@@ -46,7 +46,7 @@ function plot_volt_vs_avg_current_by_group_letter(dataTable, analysisFolder)
                 if size(data, 2) < 4, continue; end
 
                 % Modified: Change column 3 to 2 for x-axis data
-                v = data(:, 2);  % Drain Voltage
+                v = data(:, 3);  % Gate Voltage
                 i = data(:, 4);  % Current
 
                 if isempty(voltages)
@@ -101,13 +101,14 @@ rawExport{1, colIdx} = sprintf('%s - %s', cellNames{s}, sweepLabels{s});
         end
 
         % Modified: Change x-axis label
-        xlabel('Drain Voltage (V)');
+        xlabel('Gate Voltage (V)');
         ylabel('Average Current [A]');
         title(sprintf('Group %s - Sweep Plot', group));
         legend(h, legendEntries, 'Location', 'eastoutside');
         set(gca, 'Position', [0.1, 0.1, 0.65, 0.8]);
         grid on;
         hold off;
+        ylim([0 0.05]);
 
         % Save figure
         plotFile = fullfile(analysisFolder, sprintf('Group_%s_sweeps.png', group));

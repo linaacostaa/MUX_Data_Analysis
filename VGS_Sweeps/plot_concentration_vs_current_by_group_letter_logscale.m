@@ -72,7 +72,7 @@ function plot_concentration_vs_current_by_group_letter_logscale(dataTable, analy
         xlabel('Concentration [pM]');
         xscale log;
         ylabel(sprintf('Avg Current at V_{GS} = %.2f V', targetVGS));
-        ylim([0 0.0035]);
+        ylim([0 0.01]);
        
         title(sprintf('Group %s - Concentration vs Current', group));
         grid on;
