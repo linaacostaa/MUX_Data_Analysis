@@ -1,6 +1,11 @@
 function dataTable = gather_data_for_concentration_plotting(mainFolderPath)
-    dataRows = {};  % Initialize storage
-    % Get concentration folders
+    % GATHER_DATA_FOR_CONCENTRATION_PLOTTING Collects data from a
+    % hierarchical folder structure for plotting.
+    % It now uses the new file naming convention instead of a JSON file.
+
+    dataRows = {};  % Initialize storage for table data
+    
+    % Get concentration folders (e.g., [10], [50])
     concentrationFolders = dir(mainFolderPath);
     concentrationFolders = concentrationFolders([concentrationFolders.isdir]);
     concentrationFolders = concentrationFolders(~ismember({concentrationFolders.name}, {'.', '..'}));
@@ -9,14 +14,15 @@ function dataTable = gather_data_for_concentration_plotting(mainFolderPath)
     concentrationFolders = concentrationFolders(arrayfun(@(x) x.name(1) ~= '.', concentrationFolders));
     
     for c = 1:length(concentrationFolders)
-      
         concName = concentrationFolders(c).name;
         concPath = fullfile(mainFolderPath, concName);
+        
         % Extract numeric concentration value from folder name [X]
         concMatch = regexp(concName, '\[(\d+\.?\d*)\]', 'tokens');
         if isempty(concMatch), continue; end
         concentration = str2double(concMatch{1}{1});
-        % Get run folders inside this concentration folder
+        
+        % Get run folders inside this concentration folder (e.g., 1, 2, 3)
         runFolders = dir(concPath);
         runFolders = runFolders([runFolders.isdir]);
         runFolders = runFolders(~ismember({runFolders.name}, {'.', '..'}));
@@ -27,40 +33,38 @@ function dataTable = gather_data_for_concentration_plotting(mainFolderPath)
         for r = 1:length(runFolders)
             runName = runFolders(r).name;
             runPath = fullfile(concPath, runName);
-            % Find JSON
-            jsonFile = dir(fullfile(runPath, '*.json'));
+            
+            % Find data files in the new "A#_rep#" naming convention
+            dataFilePattern = fullfile(runPath, '*.csv');
+            dataFiles = dir(dataFilePattern);
 
-            % Filter out JSON files starting with '.'
-            jsonFile = jsonFile(arrayfun(@(x) x.name(1) ~= '.', jsonFile));
-
-            if isempty(jsonFile)
-                warning('No JSON file in: %s', runPath);
+            % Filter out files that start with '.'
+            dataFiles = dataFiles(arrayfun(@(x) x.name(1) ~= '.', dataFiles));
+            
+            if isempty(dataFiles)
+                warning('No data files found in: %s', runPath);
                 continue;
             end
-            try
-                raw = fileread(fullfile(runPath, jsonFile.name));
-                jsonData = jsondecode(raw);
-                if ~isfield(jsonData, 'cell_names'), continue; end
-            catch
-                warning('Failed to read JSON in: %s', runPath);
-                continue;
-            end
-            cellNames = jsonData.cell_names;
-            for i = 1:length(cellNames)
-                cellName = cellNames{i};
-                % Find CSVs
-                csvFiles = dir(fullfile(runPath, sprintf('*_%s_*.csv', cellName)));
+            
+            for j = 1:length(dataFiles)
+                filePath = fullfile(runPath, dataFiles(j).name);
+                fileName = dataFiles(j).name;
                 
-                % Filter out CSV files that start with '.'
-                csvFiles = csvFiles(arrayfun(@(x) x.name(1) ~= '.', csvFiles));
+                % Extract the cell name (A#) from the filename using a regular expression
+                nameMatch = regexp(fileName, '(A\d+)_rep\d+\.csv$', 'tokens');
                 
-                for j = 1:length(csvFiles)
-                    filePath = fullfile(runPath, csvFiles(j).name);
+                % If the filename matches the pattern, extract the cell name and add to the data table
+                if ~isempty(nameMatch)
+                    cellName = nameMatch{1}{1};
+                    
+                    % Add the data to the rows
                     dataRows(end+1, :) = {cellName, runName, concentration, filePath}; %#ok<AGROW>
                 end
             end
         end
     end
+    
+    % Create a table from the collected data rows
     dataTable = cell2table(dataRows, ...
         'VariableNames', {'CellName', 'RunName', 'Concentration', 'FilePath'});
 end
