@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Averages the data from all runs for a given cell, then plots the average current vs. concentration with error bars.
+% Date: Sept. 12 2025
+
 function plot_concentration_vs_current_by_cell_name(dataTable, analysisFolder, targetVgsStr)
     % This function generates an error bar plot for each unique cell,
     % showing the average current vs. concentration. The average and

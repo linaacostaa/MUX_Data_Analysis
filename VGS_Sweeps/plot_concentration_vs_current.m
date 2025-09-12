@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Plots average current vs. concentration for each cell and run. The current is taken at a targetVgsStr (e.g., '0.5'). 
+% Date: Sept. 12 2025
+
 function plot_concentration_vs_current(dataTable, analysisFolder,targetVgsStr)
       
   if ~exist(analysisFolder, 'dir')

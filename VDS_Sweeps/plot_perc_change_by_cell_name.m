@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: For each cell, plots the percentage change in current relative to the zero concentration measurement. It also generates an averaged plot and table for each group letter.
+% Date: Sept. 12 2025
+
 function plot_perc_change_by_cell_name(dataTable, analysisFolder, targetVgsStr)
     % This function generates a plot for each unique cell, showing the
     % percentage change in current vs. concentration. The percentage change

@@ -1,3 +1,8 @@
+% Author: Lina M. Acosta Perez
+% Description: Creates a single plot for each measurement run, showing the average current vs. voltage 
+% for all concentrations within that run. It also saves the summary data to an Excel file.
+% Date: Sept. 12 2025
+
 function plot_avg_sweeps_by_run(dataTable, masterFolder)
    
     if ~exist(masterFolder, 'dir')

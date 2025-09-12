@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Plots average VGS vs. Run Name for each concentration at a specific targetCurrentStr.
+% Date: Sept. 12 2025
+
 function plot_run_vs_VTH_by_concentration(dataTable, analysisFolder, targetCurrentStr)
 % plot_run_vs_current_by_concentration Generates plots and saves data for Run Number vs. VGS at a specific current, grouped by concentration.
 % This function prompts the user for a target current value. For each

@@ -1,3 +1,8 @@
+% Author: Lina M. Acosta Perez
+% Description: Generates a separate I-V plot for each unique cell and run. It includes a 
+% line for each concentration and saves a summary Excel file with all sweep and average data.
+% Date: Sept. 12 2025
+
 function plot_voltage_vs_current(dataTable, analysisFolder)
 
     if ~exist(analysisFolder, 'dir')

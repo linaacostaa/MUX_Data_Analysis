@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Plots average VGS vs. concentration for each cell and run at a specific targetCurrentStr (e.g., '1e-6'). 
+% Date: Sept. 12 2025
+
 function plot_concentration_vs_VTH(dataTable, analysisFolder, targetCurrentStr)
 % plot_concentration_vs_VTH Generates plots and saves data for concentration vs. VGS at a specific current.
 % This function uses a target current value provided as an input argument.

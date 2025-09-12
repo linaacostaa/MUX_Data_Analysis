@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Finds the average VGS at a specific targetCurrentStr for each concentration within a group (determined by the first letter of the CellName). It then plots concentration vs. average VGS with error bars. 
+% Date: Sept. 12 2025
+
 function plot_concentration_vs_VTH_by_letter(dataTable, analysisFolder, targetCurrentStr)
 % plot_concentration_vs_current_by_group_letter Generates plots and saves data for concentration vs. VGS at a specific current, grouped by letter.
 % This function prompts the user for a target current value. For each

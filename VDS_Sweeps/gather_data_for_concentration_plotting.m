@@ -1,3 +1,8 @@
+% Author: Lina M. Acosta Perez
+% Description: This function is responsible for navigating the data folder structure and compiling the master 
+% dataTable used for all subsequent analysis. It automates the process of finding raw data files and their corresponding metadata.
+% Date: Sept. 12 2025
+
 function dataTable = gather_data_for_concentration_plotting(mainFolderPath)
     % GATHER_DATA_FOR_CONCENTRATION_PLOTTING Collects data from a
     % hierarchical folder structure for plotting.
@@ -68,3 +73,6 @@ function dataTable = gather_data_for_concentration_plotting(mainFolderPath)
     dataTable = cell2table(dataRows, ...
         'VariableNames', {'CellName', 'RunName', 'Concentration', 'FilePath'});
 end
+
+
+

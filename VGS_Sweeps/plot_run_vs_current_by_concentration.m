@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Plots average current versus run number for each concentration at a specific target voltage (VGS). It generates both combined and individual plots, as well as Excel tables.
+% Date: Sept. 12 2025
+
 function plot_run_vs_current_by_concentration(dataTable, analysisFolder, targetVgsStr)
     
     if ~exist(analysisFolder, 'dir')

@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Plots average VGS vs. concentration for each cell and run at a specific targetCurrentStr (e.g., '1e-6'). The x-axis (concentration) in a logarithmic scale.
+% Date: Sept. 12 2025
+
 function plot_concentration_vs_VTH_logscale(dataTable, analysisFolder, targetCurrentStr)
 % plot_concentration_vs_current Generates plots and saves data for concentration vs. VGS at a specific current.
 % This function prompts the user for a target current value. For each

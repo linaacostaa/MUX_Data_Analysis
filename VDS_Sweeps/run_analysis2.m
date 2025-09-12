@@ -1,3 +1,8 @@
+% Author: Lina M. Acosta Perez
+% Description: The purpose of these scripts is to automate the visualization and summarization of electrical data from multiple measurement runs
+% and cells. The scripts generate various plots and summary tables to help users quickly assess device performance across different concentrations and runs.
+% Date: Sept. 12 2025
+
 clc; clear; close all;
 %% Step 1: Ask the user to select the scripts folder (where .m files are located)
 scriptsFolder = uigetdir('', 'Select the Folder Containing .m Files');

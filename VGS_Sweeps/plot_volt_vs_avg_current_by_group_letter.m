@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Groups the data by the first letter of the CellName (e.g., all 'A' cells together) and plots the average current vs. voltage for each concentration within that group.
+% Date: Sept. 12 2025
+
 function plot_volt_vs_avg_current_by_group_letter(dataTable, analysisFolder)
 
     if ~exist(analysisFolder, 'dir')

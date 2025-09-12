@@ -1,3 +1,7 @@
+% Author: Lina M. Acosta Perez
+% Description: Averages the data for all cells and runs that share the same group letter, then plots the average current vs. concentration with error bars. The x-axis is in logarithmic scale.
+% Date: Sept. 12 2025
+
 function plot_concentration_vs_current_by_group_letter_logscale(dataTable, analysisFolder, targetVgsStr)
    
      if ~exist(analysisFolder, 'dir')
