@@ -33,13 +33,12 @@ end
 %% Step 7.1: Generate average current plots by concentration
 plot_volt_vs_avg_current_by_group_letter(dataTable, analysisFolder_volt_vs_avg_current_letter);
 %% Step 11: Create a folder to save concentration plots inside the selected folder
-analysisFolder_avg_concentration = fullfile(concFolderPath, '11_sweep_avg_per_parameter_group');
+analysisFolder_avg_concentration = fullfile(concFolderPath, '11_sweep_avg_per_run');
 if ~exist(analysisFolder_avg_concentration, 'dir')
     mkdir(analysisFolder_avg_concentration);
 end
 %% Step 11.1: Generate average of all the sweeps for a given run number
-% NOTE: The 'RunName' column has been replaced by 'Parameters' in the data table.
-% Make sure your plotting function handles this change.
+
 plot_avg_sweeps_by_run(dataTable, analysisFolder_avg_concentration);
 
 %% Sampling Method Selection
@@ -85,7 +84,7 @@ switch samplingChoice
         end
         plot_concentration_vs_VTH_by_letter_logscale(dataTable, analysisFolder_conc_vs_avg_VTH_well_logscale, idsValue);
         
-        analysisFolder_plot_run_vs_VTH_by_concentration = fullfile(concFolderPath, ['16_parameter_vs_VTH_IDS_sampling_' idsValue]);
+        analysisFolder_plot_run_vs_VTH_by_concentration = fullfile(concFolderPath, ['16_run_vs_VTH_IDS_sampling_' idsValue]);
         if ~exist(analysisFolder_plot_run_vs_VTH_by_concentration, 'dir')
             mkdir(analysisFolder_plot_run_vs_VTH_by_concentration);
         end

@@ -57,7 +57,7 @@ function plot_concentration_vs_current(dataTable, analysisFolder,targetVgsStr)
             xlabel('Concentration [pM]');
             ylabel(sprintf('Avg Current at V_{GS} = %.2f V', targetVGS));
             title(sprintf('Cell: %s | %s', cellName, runName));
-            ylim([0 0.0035]);
+            ylim([0 0.05]);
          
             grid on;
             % Save plot and Excel

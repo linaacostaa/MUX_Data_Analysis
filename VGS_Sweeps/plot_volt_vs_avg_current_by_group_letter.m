@@ -108,7 +108,7 @@ rawExport{1, colIdx} = sprintf('%s - %s', cellNames{s}, sweepLabels{s});
         set(gca, 'Position', [0.1, 0.1, 0.65, 0.8]);
         grid on;
         hold off;
-        ylim([0 0.05]);
+        ylim([0 0.015]);
 
         % Save figure
         plotFile = fullfile(analysisFolder, sprintf('Group_%s_sweeps.png', group));

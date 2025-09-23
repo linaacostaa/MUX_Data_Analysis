@@ -81,7 +81,7 @@ function plot_voltage_vs_current(dataTable, analysisFolder)
             set(gca, 'Position', [0.1, 0.1, 0.65, 0.8]);
             grid on;
             hold off;
-           % ylim([0 0.00]);
+            ylim([0 16e-3]);
 
             plotFile = fullfile(analysisFolder, sprintf('%s_%s_avg_plot.png', cellName, runName));
             saveas(gcf, plotFile);

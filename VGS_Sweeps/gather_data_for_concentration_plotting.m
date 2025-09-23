@@ -56,7 +56,7 @@ function dataTable = gather_data_for_concentration_plotting(mainFolderPath)
                 fileName = dataFiles(j).name;
                 
                 % Extract the cell name (A#) from the filename using a regular expression
-                nameMatch = regexp(fileName, '(A\d+)_rep\d+\.csv$', 'tokens');
+                nameMatch = regexp(fileName, '([A-Za-z]\d+)_rep\d+\.csv$', 'tokens');
                 
                 % If the filename matches the pattern, extract the cell name and add to the data table
                 if ~isempty(nameMatch)

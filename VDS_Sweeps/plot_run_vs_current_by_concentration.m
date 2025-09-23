@@ -104,7 +104,7 @@ function plot_run_vs_current_by_concentration(dataTable, analysisFolder, targetV
         title(sprintf('Run vs Current - [%.2f]', conc));
         xticks(runX);
         xticklabels(runNames);
-        ylim([0.000 0.0035]);
+        ylim([0.000 0.05]);
         grid on;
 
         indivPlotFile = fullfile(analysisFolder, sprintf('Run_vs_Current_Conc_[%.2f].png', conc));

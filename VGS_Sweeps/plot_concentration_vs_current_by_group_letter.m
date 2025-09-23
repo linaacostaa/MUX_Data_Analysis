@@ -70,7 +70,7 @@ function plot_concentration_vs_current_by_group_letter(dataTable, analysisFolder
         errorbar(summaryConcs, summaryCurrents, summaryStds, '-o', 'LineWidth', 2);
         xlabel('Concentration [pM]');
         ylabel(sprintf('Avg Current at V_{GS} = %.2f V', targetVGS));
-        ylim([0 0.01]);
+        ylim([0 0.0017]);
       
         title(sprintf('Group %s - Concentration vs Current', group));
         grid on;

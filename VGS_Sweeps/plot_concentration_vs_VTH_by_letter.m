@@ -115,7 +115,7 @@ function plot_concentration_vs_VTH_by_letter(dataTable, analysisFolder, targetCu
         % The original code did not have 'xscale log;' here, so it's not added.
         ylabel(sprintf('Avg V_{GS} at Current = %.2e A', targetCurrent));
         title(sprintf('Group %s - Concentration vs V_{GS}', group));
-        % ylim auto-scales now, removed fixed limit for VGS
+        ylim([0 1.3]);
 
         grid on; % Add a grid for better readability
 

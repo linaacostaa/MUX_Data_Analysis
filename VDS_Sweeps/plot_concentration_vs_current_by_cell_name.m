@@ -96,7 +96,7 @@ function plot_concentration_vs_current_by_cell_name(dataTable, analysisFolder, t
         errorbar(summaryConcs, summaryCurrents, summaryStds, '-o', 'LineWidth', 2);
         xlabel('Concentration [pM]');
         ylabel(sprintf('Avg Current at V_{GS} = %.2f V', targetVGS));
-        ylim([0 0.0035]); % Set a consistent y-axis limit for all plots
+        ylim([0 0.05]); % Set a consistent y-axis limit for all plots
       
         title(sprintf('Cell %s - Concentration vs Current', cellName));
         grid on;
