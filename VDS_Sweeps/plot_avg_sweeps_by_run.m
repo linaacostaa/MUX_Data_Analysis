@@ -3,7 +3,7 @@
 % for all concentrations within that run. It also saves the summary data to an Excel file.
 % Date: Sept. 12 2025
 
-function plot_avg_sweeps_by_run(dataTable, masterFolder)
+function plot_avg_sweeps_by_run(dataTable, masterFolder, I_V_min_final, I_V_max_final)
    
     if ~exist(masterFolder, 'dir')
         mkdir(masterFolder);
@@ -93,6 +93,7 @@ function plot_avg_sweeps_by_run(dataTable, masterFolder)
         set(gca, 'Position', [0.1, 0.1, 0.65, 0.8]);
         grid on;
         hold off;
+        ylim([I_V_min_final I_V_max_final]);
 
         % Save the figure
         plotFile = fullfile(runSummaryFolder, sprintf('Run_%s_avg_sweeps.png', runName));

@@ -1,0 +1,17 @@
+% filepath: /Users/linaacosta/Desktop/MUX_Data_Analysis/VDS_Sweeps/VDS_min_max.m
+function [VDS_min_raw, VDS_max_raw] = VDS_min_max(dataTable, targetValue)
+    % targetValue is provided by the user (vgsValue or idsValue) in case you
+    % need to filter or use it, but for now, we use the entire table.
+    
+    % Convert the table to a numeric array
+    dataArray = table2array(dataTable);
+    % Select every 4th column starting at 2 (i.e. columns 2, 6, 10, ...)
+    colIndices = 2:4:size(dataArray,2);
+    if isempty(colIndices)
+        error('No columns found matching the drain voltage data (columns 2,6,...).');
+    end
+    drainVoltageData = dataArray(:, colIndices);
+    % Get the overall (absolute) min and max drain voltage values
+    VDS_min_raw = min(drainVoltageData(:));
+    VDS_max_raw = max(drainVoltageData(:));
+end

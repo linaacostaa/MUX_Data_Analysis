@@ -3,7 +3,7 @@
 % line for each concentration and saves a summary Excel file with all sweep and average data.
 % Date: Sept. 12 2025
 
-function plot_voltage_vs_current(dataTable, analysisFolder)
+function plot_voltage_vs_current(dataTable, analysisFolder,I_V_min_final, I_V_max_final)
 
     if ~exist(analysisFolder, 'dir')
         mkdir(analysisFolder);
@@ -81,7 +81,7 @@ function plot_voltage_vs_current(dataTable, analysisFolder)
             set(gca, 'Position', [0.1, 0.1, 0.65, 0.8]);
             grid on;
             hold off;
-            ylim([0 16e-3]);
+            ylim([I_V_min_final I_V_max_final]);
 
             plotFile = fullfile(analysisFolder, sprintf('%s_%s_avg_plot.png', cellName, runName));
             saveas(gcf, plotFile);
