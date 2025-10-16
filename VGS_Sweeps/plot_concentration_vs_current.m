@@ -80,3 +80,4 @@ function plot_concentration_vs_current(dataTable, analysisFolder,targetVgsStr)
             writetable(summaryTable, summaryExcelFile);
         end
     end
+end

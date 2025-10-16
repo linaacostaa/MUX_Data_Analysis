@@ -85,6 +85,7 @@ function plot_avg_sweeps_by_run(dataTable, masterFolder)
                  [meanI + stdI, fliplr(meanI - stdI)], ...
                  cmap(c, :), 'FaceAlpha', 0.2, 'EdgeColor', 'none');
             hLine = plot(voltages, meanI, 'Color', cmap(c, :), 'LineWidth', 2);
+            maxI=
             legendHandles(end+1) = hLine;
             legendEntries{end+1} = sprintf('[%.2f]', conc);
     
@@ -211,3 +212,4 @@ function plot_avg_sweeps_by_run(dataTable, masterFolder)
         fprintf('✅ Saved Excel for run %s: %s\n', runName, excelFile);
     end
 end
+%% plots and outputs
